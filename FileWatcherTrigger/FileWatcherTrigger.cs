@@ -284,6 +284,8 @@ namespace NetEti.FileTools
                 {
                     fileSystemWatcher.EnableRaisingEvents = false;
                 }
+                Thread.Sleep(300); // Doppel-Events aussitzen. 15.07.2022 Nagel+- hierhin verschoben, damit evetuell
+                                   // die Dateisystem-Operation noch abgeschlossen werden kann, bevor der Trigger feuert.
                 if (this._triggerIt != null)
                 {
                     this._triggerIt(new TriggerEvent(ep.EventArgs.FullPath, ep.EventArgs.ChangeType.ToString()));
@@ -292,7 +294,7 @@ namespace NetEti.FileTools
                 {
                     this.Log("OnTriggerFired this._triggerIt == null");
                 }
-                Thread.Sleep(300); // Doppel-Events aussitzen.
+                // 15.07.2022 Nagel+- auskommentiert: Thread.Sleep(300); // Doppel-Events aussitzen.
                 if (fileSystemWatcher != null)
                 {
                     fileSystemWatcher.EnableRaisingEvents = true;
