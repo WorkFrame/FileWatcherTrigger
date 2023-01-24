@@ -266,8 +266,10 @@ namespace NetEti.FileTools
         #region protected members
 
         /// <summary>
-        /// Trigger-Event auslösen.
+        /// Löst das Trigger-Event aus.
         /// </summary>
+        /// <param name="fileSystemWatcher">Der beobachtende FileSystemWatcher.</param>
+        /// <param name="ep">EventPattern, enthält EventArgs und dort Informationen über die beobachtete Datei.</param>
         protected void OnTriggerFired(FileSystemWatcher fileSystemWatcher, EventPattern<FileSystemEventArgs> ep)
         {
             string info = "";
