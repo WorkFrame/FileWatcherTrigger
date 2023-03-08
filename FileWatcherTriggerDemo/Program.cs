@@ -1,5 +1,4 @@
-﻿using System;
-using NetEti.ApplicationControl;
+﻿using NetEti.ApplicationControl;
 using NetEti.FileTools;
 
 namespace NetEti.DemoApplications

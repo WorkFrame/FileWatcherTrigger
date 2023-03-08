@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Reactive.Linq;
-using System.IO;
+﻿using System.Reactive.Linq;
 using System.Reactive;
 using NetEti.Globals;
 using NetEti.ApplicationControl;
@@ -83,7 +78,7 @@ namespace NetEti.FileTools
                     }
                 }
             }
-            this._fileSystemWatchers.Clear();
+            this._fileSystemWatchers?.Clear();
         }
 
         /// <summary>
@@ -138,11 +133,11 @@ namespace NetEti.FileTools
         /// <param name="triggerParameters">Pfad der zu beobachtenden Datei.</param>
         /// <param name="triggerIt">Die aufzurufende Callback-Routine, wenn der Trigger feuert.</param>
         /// <returns>True, wenn der Trigger durch diesen Aufruf tatsächlich gestartet wurde.</returns>
-        public bool Start(object triggerController, object triggerParameters, Action<TriggerEvent> triggerIt)
+        public bool Start(object? triggerController, object triggerParameters, Action<TriggerEvent> triggerIt)
         {
             this._triggerController = (triggerController ?? "").ToString();
 
-            string triggerParametersString = triggerParameters.ToString();
+            string triggerParametersString = triggerParameters.ToString() ?? "";
 
             this._eventTimer = null;
             this._lastTimerStart = DateTime.MinValue;
@@ -174,8 +169,8 @@ namespace NetEti.FileTools
 
             string[] para = (triggerParametersString + "|").Split('|');
             this._initialFire = false;
-            string firstValidFile = null;
-            this._fileName = null;
+            string? firstValidFile = null;
+            this._fileName = "";
             for (int i = 0; i < para.Count(); i++)
             {
                 string paraString = para[i].Trim();
@@ -189,10 +184,10 @@ namespace NetEti.FileTools
                     {
                         if (firstValidFile == null)
                         {
-                            if (_fileName == null) // der erste Parameter ist inclusive Dateiname
+                            if (String.IsNullOrEmpty(_fileName)) // der erste Parameter ist inclusive Dateiname
                             {
                                 _fileName = Path.GetFileName(paraString);
-                                paraString = Path.GetDirectoryName(paraString);
+                                paraString = Path.GetDirectoryName(paraString) ?? "";
                             }
                             foreach (string path in paraString.Split(','))
                             {
@@ -201,7 +196,7 @@ namespace NetEti.FileTools
                                 {
                                     firstValidFile = Path.Combine(workerPath, _fileName);
                                     this._validDirectories.Clear();
-                                    this._validDirectories.Add(workerPath);
+                                    this._validDirectories.Add(Path.GetDirectoryName(firstValidFile) ?? ".");
                                     break;
                                 }
                                 if (Directory.Exists(workerPath))
@@ -258,7 +253,7 @@ namespace NetEti.FileTools
         {
             this._validDirectories = new List<string>();
             this._fileSystemWatchers = new Dictionary<FileSystemWatcher, FileSystemWatcherTriggerControl>();
-
+            this._fileName = "";
         }
 
         #endregion public members
@@ -272,8 +267,7 @@ namespace NetEti.FileTools
         /// <param name="ep">EventPattern, enthält EventArgs und dort Informationen über die beobachtete Datei.</param>
         protected void OnTriggerFired(FileSystemWatcher fileSystemWatcher, EventPattern<FileSystemEventArgs> ep)
         {
-            string info = "";
-            info = fileSystemWatcher?.Path;
+            string info = fileSystemWatcher.Path ?? "";
 
             this.Log("OnTriggerFired: " + info);
             if (this._eventTimer != null)
@@ -347,25 +341,25 @@ namespace NetEti.FileTools
         private bool _initialFire;
         private string _fileName;
 
-        private System.Timers.Timer _eventTimer;
+        private System.Timers.Timer? _eventTimer;
         private int _timerInterval;
-        private string _textPattern;
-        private Regex _compiledPattern;
+        private string? _textPattern;
+        private Regex? _compiledPattern;
         private DateTime _lastTimerStart;
         private DateTime _nextTimerStart;
-        private string _triggerController;
+        private string? _triggerController;
 
         /// <summary>
         /// Wird ausgelöst, wenn das Trigger-Ereignis (z.B. Dateiänderung) eintritt. 
         /// </summary>
-        private event Action<TriggerEvent> _triggerIt;
+        private event Action<TriggerEvent>? _triggerIt;
 
         private class FileSystemWatcherTriggerControl
         {
-            public IObservable<EventPattern<FileSystemEventArgs>> WatcherTask { get; set; }
-            public CancellationTokenSource WatcherTerminator { get; set; }
-            public string WatchedDirectory { get; set; }
-            public string WatchedFileName { get; set; }
+            public IObservable<EventPattern<FileSystemEventArgs>>? WatcherTask { get; set; }
+            public CancellationTokenSource? WatcherTerminator { get; set; }
+            public string WatchedDirectory { get; set; } = "";
+            public string WatchedFileName { get; set; } = "";
         }
 
         private bool setupTriggers()
@@ -375,8 +369,8 @@ namespace NetEti.FileTools
                 foreach (string watchedDirectory in EnumerableThreadSafeCopy<string>
                           .GetEnumerableThreadSafeCopy(this._validDirectories))
                 {
-                    FileSystemWatcher fileSystemWatcher = null;
-                    FileSystemWatcherTriggerControl control = null;
+                    FileSystemWatcher? fileSystemWatcher = null;
+                    FileSystemWatcherTriggerControl? control = null;
                     fileSystemWatcher
                       = new FileSystemWatcher
                       {
@@ -418,7 +412,7 @@ namespace NetEti.FileTools
             return true;
         }
 
-        private void eventTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void eventTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             this.OnTriggerFired(this._fileSystemWatchers.First().Key, new EventPattern<FileSystemEventArgs>(this,
               new FileSystemEventArgs(WatcherChangeTypes.Changed,

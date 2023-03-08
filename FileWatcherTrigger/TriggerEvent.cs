@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace NetEti.FileTools
 {
@@ -57,7 +56,7 @@ namespace NetEti.FileTools
         /// </summary>
         /// <param name="obj">Vergleichs-TriggerEvent.</param>
         /// <returns>True, wenn das übergebene TriggerEvent inhaltlich (ohne Timestamp) gleich diesem TriggerEvent ist.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -67,7 +66,7 @@ namespace NetEti.FileTools
             {
                 return true;
             }
-            TriggerEvent res = obj as TriggerEvent;
+            TriggerEvent res = (TriggerEvent)obj;
             if (res.FullPath == this.FullPath && res.ChangeInfo == this.ChangeInfo)
             {
                 return true;
