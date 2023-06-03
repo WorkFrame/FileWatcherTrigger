@@ -12,6 +12,8 @@
     <Company>NetEti</Company>
     <Description>$(AssemblyName) - Demoprogramm</Description>
     <Copyright>Copyright © $(Authors) 2019-2023</Copyright>
+    <AssemblyVersion>7.0.1.0</AssemblyVersion>
+    <FileVersion>7.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
