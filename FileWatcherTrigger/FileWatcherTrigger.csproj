@@ -12,8 +12,8 @@
     <Company>NetEti</Company>
     <Description>Assembly mit Routinen zur Überwachung von Dateiänderungen</Description>
     <Copyright>Copyright © $(Authors) 2019-2023</Copyright>
-    <AssemblyVersion>7.0.1.0</AssemblyVersion>
-    <FileVersion>7.0.1.0</FileVersion>
+    <AssemblyVersion>7.0.1.1</AssemblyVersion>
+    <FileVersion>7.0.1.1</FileVersion>
     <PackageTags>NetEti Framework File Watcher Trigger</PackageTags>
   </PropertyGroup>
 
