@@ -9,3 +9,12 @@ auftreten können, z.B. 'Watched directory not accessible', so dass der FileWatc
 Die Parameterübergabe als ein Pipe-separierter String stammt aus einem Produktiv-Umfeld, wo sich dieses Format als praktikabel erwiesen hat. Wer möchte, kann hier gerne
 eine passende, klassische Aufruf-Variante hinzufügen (bitte aber die Ein-String-Variante leben lassen).
 Siehe auch das enthaltene Projekt FileWatcherTriggerDemo.
+
+## Einsatzbereich
+
+  - Dieses Repository gehört, wie auch alle anderen unter **WorkFrame** liegenden Projekte, ursprünglich zum
+   Repository **Vishnu** (https://github.com/VishnuHome/Vishnu), kann aber auch eigenständig für andere Apps verwendet werden.
+
+## Voraussetzungen, Schnellstart, Quellcode und Entwicklung
+
+  - Weitere Ausführungen findest du im Repository [BasicAppSettings](https://github.com/WorkFrame/BasicAppSettings).
